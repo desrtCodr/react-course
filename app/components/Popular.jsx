@@ -1,13 +1,45 @@
 import * as React from 'react'
 
-export default class Popular extends React.Component {
-    render() {
-        const languages = ["All", "Javascript","Ruby", "Java", "CSS", "Python"];
+function LanguagesNav ({selected, onUpdateLanguage}) {
+    const languages = ["All", "Javascript","Ruby", "Java", "CSS", "Python"];
 
+    return (
+        <select 
+            onChange={(e) => {onUpdateLanguage(e.target.value)}}
+            selected={selected}
+        >
+            {languages.map((language) => (
+                <option key={language} value={language}>
+                    {language}
+                </option>))}
+        </select>
+    )
+}
+
+export default class Popular extends React.Component {
+    constructor(props) {
+        super(props); 
+
+        this.state = {
+            selectedLanguage: "All"
+        }
+        this.updateLanguage = this.updateLanguage.bind(this)
+    }
+    updateLanguage (selectedLanguage) {
+        this.setState({
+            selectedLanguage,
+        })
+    }
+    render() {
+        const { selectedLanguage } = this.state
         return (
-            <select>
-                {languages.map((language) => (<option key={language} value={language}>{language}</option>))}
-            </select>
+            <main>
+                <LanguagesNav 
+                    selected={selectedLanguage}
+                    onUpdateLanguage = {this.updateLanguage}
+                />
+                {JSON.stringify(this.state, null, 2)}
+            </main>
         )
     }
 }
