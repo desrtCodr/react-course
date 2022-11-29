@@ -2,7 +2,7 @@ import * as React from 'react'
 
 export default class Popular extends React.Component {
     render() {
-        const languages = ["All", "Javascript","Ruby", "Java", "CSS", "Python"];
+        const languages = ["All", "Javaascript","Ruby", "Java", "CSS", "Python"];
 
         return (
             <select>
