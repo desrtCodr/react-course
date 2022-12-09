@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { battle } from '../utils/api';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
+import withSearchParams from './withSearchParams';
+import { Link } from 'react-router-dom';
 
 function Card({ profile }) {
   const {
@@ -69,7 +71,7 @@ Card.propTypes = {
   }).isRequired,
 };
 
-export default class Results extends Component {
+class Results extends React.Component {
   constructor(props) {
     super(props);
 
@@ -81,7 +83,9 @@ export default class Results extends Component {
     };
   }
   componentDidMount() {
-    const { playerOne, playerTwo } = this.props;
+    const sp = this.props.router.searchParams;
+    const playerOne = sp.get('playerOne');
+    const playerTwo = sp.get('playerTwo');
 
     battle([playerOne, playerTwo])
       .then((players) => {
@@ -114,6 +118,9 @@ export default class Results extends Component {
       <main className='animate-in stack main-stack'>
         <div className='split'>
           <h1>Results</h1>
+          <Link to='/battle' className='btn secondary'>
+            Reset
+          </Link>
         </div>
         <section className='grid'>
           <article>
@@ -136,7 +143,7 @@ export default class Results extends Component {
             <Card profile={loser.profile} />
             <p className='results'>
               <span>
-                {winner.score === loser.score ? 'Tie' : 'Loser'}
+                {winner.score === loser.score ? 'Tie' : 'Loser'}{' '}
                 {loser.score.toLocaleString()}
               </span>
             </p>
@@ -146,3 +153,4 @@ export default class Results extends Component {
     );
   }
 }
+export default withSearchParams(Results);

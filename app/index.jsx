@@ -9,6 +9,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Nav from './components/Nav';
+import Results from './components/Results';
 /*
  Component needs to: 
  1. maintain its own state
@@ -44,6 +45,7 @@ class App extends React.Component {
             <Routes>
               <Route path='/' element={<Popular />} />
               <Route path='/battle' element={<Battle />} />
+              <Route path='/results' element={<Results />} />
             </Routes>
           </div>
         </div>
