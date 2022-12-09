@@ -3,7 +3,12 @@ import * as ReactDOM from 'react-dom/client';
 import Popular from './components/Popular';
 import './index.css';
 import Battle from './components/Battle';
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom';
+import Nav from './components/Nav';
 /*
  Component needs to: 
  1. maintain its own state
@@ -12,13 +17,37 @@ import Battle from './components/Battle';
 */
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      theme: 'light',
+    };
+
+    this.toggleTheme = this.toggleTheme.bind(this);
+  }
+  toggleTheme() {
+    this.setState(({ theme }) => ({
+      theme: theme === 'light' ? 'dark' : 'light',
+    }));
+  }
+
   render() {
     return (
-      <div className='light'>
-        <div className='container'>
-          <Popular />
+      <Router>
+        <div className={this.state.theme}>
+          <div className='container'>
+            <Nav
+              theme={this.state.theme}
+              toggleTheme={this.toggleTheme}
+            />
+            <Routes>
+              <Route path='/' element={<Popular />} />
+              <Route path='/battle' element={<Battle />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
