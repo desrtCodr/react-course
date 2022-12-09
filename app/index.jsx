@@ -1,15 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import Popular from './components/Popular';
 import './index.css';
-import Battle from './components/Battle';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from 'react-router-dom';
+import Loading from './components/Loading';
 import Nav from './components/Nav';
-import Results from './components/Results';
+
+const Results = React.lazy(() => import('./components/Results'));
+const Popular = React.lazy(() => import('./components/Popular'));
+const Battle = React.lazy(() => import('./components/Battle'));
 /*
  Component needs to: 
  1. maintain its own state
@@ -36,11 +38,13 @@ class App extends React.Component {
               theme={this.state.theme}
               toggleTheme={this.toggleTheme}
             />
-            <Routes>
-              <Route path='/' element={<Popular />} />
-              <Route path='/battle' element={<Battle />} />
-              <Route path='/results' element={<Results />} />
-            </Routes>
+            <React.Suspense fallback={<Loading />}>
+              <Routes>
+                <Route path='/' element={<Popular />} />
+                <Route path='/battle' element={<Battle />} />
+                <Route path='/results' element={<Results />} />
+              </Routes>
+            </React.Suspense>
           </div>
         </div>
       </Router>
